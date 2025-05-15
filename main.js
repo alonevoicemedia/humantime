@@ -164,7 +164,9 @@ const scheduleNotifications = (items) => {
     const spoken = event.results[0][0].transcript;
     console.log("✅ Recognized speech:", spoken);
     setCommand(spoken);
-    handleCommand();
+    setTimeout(() => {
+      handleCommand();
+    }, 100); // wait 100ms to ensure state is updated
   };
 
   recognition.onerror = (event) => {
