@@ -134,18 +134,39 @@ const scheduleNotifications = (items) => {
         )
       )
     ),
-    createElement("section", { className: "section" },
-      createElement("h2", null, "🎙️ Simulate a Voice Command"),
-      createElement("div", { className: "voice-box" },
-        createElement("input", {
-          type: "text",
-          placeholder: "e.g., 'No lunch today'",
-          value: command,
-          onChange: (e) => setCommand(e.target.value)
-        }),
-        createElement("button", { onClick: handleCommand }, "Submit")
-      )
-    ),
+  createElement("section", { className: "section" },
+  createElement("h2", null, "🎙️ Voice Commands (Real-Time)"),
+  createElement("div", { className: "voice-box" },
+    createElement("input", {
+      type: "text",
+      placeholder: "Or type a command (e.g., 'No lunch today')",
+      value: command,
+      onChange: (e) => setCommand(e.target.value)
+    }),
+    createElement("button", { onClick: handleCommand }, "Submit"),
+    createElement("button", {
+      onClick: () => {
+        if (!("webkitSpeechRecognition" in window)) {
+          alert("Sorry, your browser does not support voice recognition.");
+          return;
+        }
+
+        const recognition = new webkitSpeechRecognition();
+        recognition.lang = "en-US";
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
+        recognition.onresult = (event) => {
+          const spoken = event.results[0][0].transcript;
+          setCommand(spoken);
+          handleCommand();
+        };
+
+        recognition.start();
+      }
+    }, "🎤 Speak")
+  )
+),
   createElement("section", { className: "section" },
     createElement("h2", null, "🔔 Notifications"),
     createElement("button", {
