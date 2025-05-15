@@ -110,9 +110,30 @@ function App() {
         }),
         createElement("button", { onClick: handleCommand }, "Submit")
       )
-    )
-  );
+    ),
+  createElement("section", { className: "section" },
+    createElement("h2", null, "🔔 Notifications"),
+    createElement("button", {
+      onClick: () => {
+        requestNotificationPermission();
+        if ("Notification" in window && Notification.permission === "granted") {
+          new Notification("💧 Time to hydrate!");
+        }
+      }
+    }, "Send Test Notification")
+  )
+);
 }
 
 const root = createRoot(document.getElementById("root"));
+function requestNotificationPermission() {
+  if ("Notification" in window && Notification.permission !== "granted") {
+    Notification.requestPermission().then((permission) => {
+      if (permission === "granted") {
+        new Notification("✅ Notifications enabled for HumanTime!");
+      }
+    });
+  }
+}
+
 root.render(createElement(App));
