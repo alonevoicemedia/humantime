@@ -49,7 +49,9 @@ function App() {
     updated = [...selectedNeeds, need];
   }
   setSelectedNeeds(updated);
-  setSchedule(generateSchedule(updated));
+  const newSchedule = generateSchedule(updated);
+  setSchedule(newSchedule);
+  scheduleNotifications(newSchedule); // ⬅️ This line is new!
 };
 
   const handleCommand = () => {
@@ -67,6 +69,15 @@ function App() {
     setSchedule(updatedSchedule);
     setCommand("");
   };
+const scheduleNotifications = (items) => {
+  if (!("Notification" in window) || Notification.permission !== "granted") return;
+
+  items.forEach((item, index) => {
+    setTimeout(() => {
+      new Notification(`${ICONS[item.activity] || "⏰"} Time for ${item.activity}`);
+    }, (index + 1) * 60000); // sends each notification 1 min apart (demo pacing)
+  });
+};
 
   return createElement("div", { className: "app-container" },
     createElement("header", null,
