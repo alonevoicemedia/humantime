@@ -5,14 +5,108 @@ body {
   color: #1f2937;
 }
 
+/* Add breathing room and mobile-friendliness */
+.app-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
 h1 {
   color: #1a237e;
+  margin-bottom: 0.2rem;
+}
+
+p {
+  color: #6b7280;
+  font-size: 1rem;
+}
+
+.section {
+  margin-bottom: 2rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
 }
 
 .checkbox-card {
+  background-color: #fff;
   border: 2px solid #facc15;
   border-radius: 12px;
   padding: 0.75rem;
-  margin-bottom: 0.5rem;
-  background: white;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
+
+.checkbox-card:hover {
+  background-color: #fefce8;
+}
+
+input[type="checkbox"] {
+  margin-right: 0.5rem;
+}
+
+.schedule {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-left: 6px solid #1a237e;
+  padding: 1rem;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.time {
+  font-weight: bold;
+  color: #374151;
+}
+
+.activity {
+  font-size: 1.1rem;
+}
+
+.voice-box {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.voice-box input {
+  flex: 1;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+}
+
+.voice-box button {
+  background-color: #1a237e;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.voice-box button:hover {
+  background-color: #0f172a;
+}
+
