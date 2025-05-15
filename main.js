@@ -42,10 +42,15 @@ function App() {
   const [command, setCommand] = useState("");
 
   const handleToggleNeed = (need) => {
-    setSelectedNeeds((prev) =>
-      prev.includes(need) ? prev.filter((n) => n !== need) : [...prev, need]
-    );
-  };
+  let updated;
+  if (selectedNeeds.includes(need)) {
+    updated = selectedNeeds.filter((n) => n !== need);
+  } else {
+    updated = [...selectedNeeds, need];
+  }
+  setSelectedNeeds(updated);
+  setSchedule(generateSchedule(updated));
+};
 
   const handleCommand = () => {
     const cmd = command.toLowerCase();
