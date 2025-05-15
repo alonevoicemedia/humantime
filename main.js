@@ -37,7 +37,10 @@ function App() {
     });
   };
 
-  const [selectedNeeds, setSelectedNeeds] = useState([...HUMAN_NEEDS]);
+const [selectedNeeds, setSelectedNeeds] = useState(() => {
+  const saved = localStorage.getItem("humanNeeds");
+  return saved ? JSON.parse(saved) : [...HUMAN_NEEDS];
+});
   const [schedule, setSchedule] = useState(generateSchedule(HUMAN_NEEDS));
   const [command, setCommand] = useState("");
 
@@ -49,6 +52,12 @@ function App() {
     updated = [...selectedNeeds, need];
   }
   setSelectedNeeds(updated);
+  localStorage.setItem("humanNeeds", JSON.stringify(updated));
+    
+    if ("Notification" in window && Notification.permission === "granted") {
+    new Notification("✅ Preferences saved to HumanTime");
+  }
+
   const newSchedule = generateSchedule(updated);
   setSchedule(newSchedule);
   scheduleNotifications(newSchedule); // ⬅️ This line is new!
