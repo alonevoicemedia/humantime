@@ -63,8 +63,8 @@ const [selectedNeeds, setSelectedNeeds] = useState(() => {
   scheduleNotifications(newSchedule); // ⬅️ This line is new!
 };
 
-  const handleCommand = () => {
-    const cmd = command.toLowerCase();
+  const handleCommand = (spokenText) => {
+    const cmd = (spokenText || command).toLowerCase();
     let updatedSchedule = [...schedule];
 
     if (cmd.includes("no lunch")) {
@@ -164,9 +164,7 @@ const scheduleNotifications = (items) => {
     const spoken = event.results[0][0].transcript;
     console.log("✅ Recognized speech:", spoken);
     setCommand(spoken);
-    setTimeout(() => {
-      handleCommand();
-    }, 100); // wait 100ms to ensure state is updated
+    handleCommand(spoken);
   };
 
   recognition.onerror = (event) => {
