@@ -78,13 +78,28 @@ const [selectedNeeds, setSelectedNeeds] = useState(() => {
     setSchedule(updatedSchedule);
     setCommand("");
   };
+  
 const scheduleNotifications = (items) => {
   if (!("Notification" in window) || Notification.permission !== "granted") return;
 
-  items.forEach((item, index) => {
-    setTimeout(() => {
-      new Notification(`${ICONS[item.activity] || "⏰"} Time for ${item.activity}`);
-    }, (index + 1) * 60000); // sends each notification 1 min apart (demo pacing)
+  const now = new Date();
+
+  items.forEach((item) => {
+    const [time, modifier] = item.time.split(" "); // "10:00 AM"
+    let [hour, minute] = time.split(":").map(Number);
+    if (modifier === "PM" && hour !== 12) hour += 12;
+    if (modifier === "AM" && hour === 12) hour = 0;
+
+    const scheduled = new Date();
+    scheduled.setHours(hour, minute, 0, 0);
+
+    const delay = scheduled.getTime() - now.getTime();
+
+    if (delay > 0) {
+      setTimeout(() => {
+        new Notification(`${ICONS[item.activity] || "⏰"} Time for ${item.activity}`);
+      }, delay);
+    }
   });
 };
 
