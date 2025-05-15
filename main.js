@@ -24,13 +24,21 @@ const ICONS = {
 };
 
 function App() {
+  const generateSchedule = (needs) => {
+    const startHour = 10; // Start at 10:00 AM
+    return needs.map((need, index) => {
+      const hour = startHour + index;
+      const suffix = hour >= 12 ? "PM" : "AM";
+      const displayHour = hour > 12 ? hour - 12 : hour;
+      return {
+        time: `${displayHour}:00 ${suffix}`,
+        activity: need
+      };
+    });
+  };
+
   const [selectedNeeds, setSelectedNeeds] = useState([...HUMAN_NEEDS]);
-  const [schedule, setSchedule] = useState([
-    { time: "10:00 AM", activity: "Drink Water" },
-    { time: "11:30 AM", activity: "Stretch" },
-    { time: "1:00 PM", activity: "Lunch" },
-    { time: "3:00 PM", activity: "Take Vitamins" }
-  ]);
+  const [schedule, setSchedule] = useState(generateSchedule(HUMAN_NEEDS));
   const [command, setCommand] = useState("");
 
   const handleToggleNeed = (need) => {
