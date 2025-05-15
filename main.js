@@ -145,24 +145,39 @@ const scheduleNotifications = (items) => {
     }),
     createElement("button", { onClick: handleCommand }, "Submit"),
     createElement("button", {
-      onClick: () => {
-        if (!("webkitSpeechRecognition" in window)) {
-          alert("Sorry, your browser does not support voice recognition.");
-          return;
-        }
+  onClick: () => {
+  if (!("webkitSpeechRecognition" in window)) {
+    alert("Sorry, your browser does not support voice recognition.");
+    return;
+  }
 
-        const recognition = new webkitSpeechRecognition();
-        recognition.lang = "en-US";
-        recognition.interimResults = false;
-        recognition.maxAlternatives = 1;
+  const recognition = new webkitSpeechRecognition();
+  recognition.lang = "en-US";
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
 
-        recognition.onresult = (event) => {
-          const spoken = event.results[0][0].transcript;
-          setCommand(spoken);
-          handleCommand();
-        };
+  recognition.onstart = () => {
+    console.log("🎤 Listening for voice input...");
+  };
 
-        recognition.start();
+  recognition.onresult = (event) => {
+    const spoken = event.results[0][0].transcript;
+    console.log("✅ Recognized speech:", spoken);
+    setCommand(spoken);
+    handleCommand();
+  };
+
+  recognition.onerror = (event) => {
+    console.error("❌ Speech recognition error:", event.error);
+    alert("Error with voice recognition: " + event.error);
+  };
+
+  recognition.onnomatch = () => {
+    console.warn("🤷 No matching speech recognized.");
+    alert("Sorry, I didn't catch that. Try again?");
+  };
+
+  recognition.start();
       }
     }, "🎤 Speak")
   )
